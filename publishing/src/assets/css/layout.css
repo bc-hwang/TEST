@@ -1,0 +1,150 @@
+@import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
+
+.layout-body {
+    padding: 6% 4%;
+}
+
+.logo-wrap {
+    display: flex;
+}
+
+.nav-btn {
+    display: flex;
+    padding: 0.2rem;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: -1px;
+}
+
+.arc-body {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    column-gap: 2rem;
+    padding: 6rem 10%;
+}
+
+.p-body {
+    padding: 6rem 10%;
+}
+
+.wri-body {
+    display: grid;
+}
+
+
+
+
+
+@media (max-width: 768px) { 
+
+    .nav-inner {
+        height: 100%;
+        width: 88%;
+        margin: auto;
+    }
+
+
+    .nav-contents-wrap {
+        display: none;
+    }
+
+    .left-body {
+        display: none;
+    }
+
+    .arc-body {
+        grid-template-columns: 1fr;
+        column-gap: 2rem;
+        padding: 4rem 2rem;
+    }
+    
+    .nav-wrap {
+        height: 5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-inner {
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    .content-belt ul,
+    .header-pro-wrap ul  {
+        margin-top: 0.7rem;
+    }
+
+
+}
+
+@media (min-width:768px) and (max-width: 1080px) { 
+
+    .nav-inner {
+        height: 100%;
+        width: 75%;
+        margin: auto;
+    }
+
+    .left-body {
+        display: none;
+    }
+
+    .arc-body {
+        grid-template-columns: 1fr;
+        column-gap: 2rem;
+        padding: 6rem 8rem;
+    }
+    
+
+    .nav-contents-wrap {
+        display: none;
+    }
+
+    .nav-wrap {
+        height: 5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-inner {
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+}
+
+
+@media (min-width:1080px) { 
+
+    .nav-inner {
+        height: 100%;
+        width: 80%;
+        margin: auto;
+    }
+
+    .nav-btn {
+        display: none;
+    }
+
+    .nav-wrap {
+        height: 5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-inner {
+        display: flex;
+        justify-content: space-between;
+
+    }
+    
+    .logo-wrap {
+        margin-bottom: 0.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+}

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dataus.deverse.domain.board.mapper.TagMapper">
+
+    <select id="getPostPopularTag" parameterType="com.dataus.deverse.global.pagination.Pagination"
+            resultType="TagVO">
+        SELECT 
+              RANK() OVER(ORDER BY COUNT(1) DESC) AS TAG_RANK
+            , ttl.TAG_NO
+            , ttl.TAG_NM
+        FROM
+              TB_TAG_LIST ttl 
+            , TB_BBSCTT_TAG_LIST tbtl
+            <if test='page.category.code != "00"'>
+                , TB_BBSCTT_LIST tbl
+            </if>
+        WHERE tbtl.DEL_YN ='N'
+        AND ttl.DEL_YN ='N'
+        AND ttl.TAG_NO = tbtl.TAG_NO 
+        <if test='page.category.code != "00"'>
+            AND tbtl.BBSCTT_NO = tbl.BBSCTT_NO
+            AND tbl.CTGRY_SE_CD = #{page.category.code}
+        </if>
+        <if test='!page.searchKeyword.isEmpty()'>
+            AND ttl.TAG_NM LIKE CONCAT('@#%', #{page.searchKeyword}, '%') ESCAPE'@'
+        </if>
+        GROUP BY TAG_NO
+        ORDER BY COUNT(1) DESC, TAG_NO ASC
+        LIMIT #{page.startPage}, #{page.recordsPerPage}
+    </select>
+
+    <select id="getPostTagTotalCount" 
+            parameterType="com.dataus.deverse.global.pagination.Pagination" 
+            resultType="int">
+        SELECT 
+              COUNT(DISTINCT ttl.TAG_NO)
+        FROM
+              TB_TAG_LIST ttl 
+            , TB_BBSCTT_TAG_LIST tbtl
+            <if test='page.category.code != "00"'>
+                , TB_BBSCTT_LIST tbl
+            </if>
+        WHERE tbtl.DEL_YN ='N'
+        AND ttl.DEL_YN ='N'
+        AND ttl.TAG_NO = tbtl.TAG_NO 
+        <if test='page.category.code != "00"'>
+            AND tbtl.BBSCTT_NO = tbl.BBSCTT_NO
+            AND tbl.CTGRY_SE_CD = #{page.category.code}
+        </if>
+        <if test='!page.searchKeyword.isEmpty()'>
+            AND ttl.TAG_NM LIKE CONCAT('@#%', #{page.searchKeyword}, '%') ESCAPE'@'
+        </if>
+    </select>
+
+    <select id="getSearchTag"
+            parameterType="com.dataus.deverse.global.pagination.Pagination" 
+            resultType="TagVO">
+        SELECT ttl.TAG_NO
+             , ttl.TAG_NM
+        FROM TB_TAG_LIST ttl
+        WHERE ttl.DEL_YN = 'N'
+        <if test='!page.searchKeyword.isEmpty()'>
+            AND ttl.TAG_NM LIKE CONCAT('@#%', #{page.searchKeyword}, '%') ESCAPE'@'
+        </if>
+        LIMIT #{page.startPage}, #{page.recordsPerPage}
+    </select>
+
+    <select id="getSearchTagTotalCount"
+            parameterType="com.dataus.deverse.global.pagination.Pagination" 
+            resultType="int">
+        SELECT COUNT(1)
+        FROM TB_TAG_LIST ttl
+        WHERE ttl.DEL_YN = 'N'
+        <if test='!page.searchKeyword.isEmpty()'>
+            AND ttl.TAG_NM LIKE CONCAT('@#%', #{page.searchKeyword}, '%') ESCAPE'@'
+        </if>
+    </select>
+
+</mapper>

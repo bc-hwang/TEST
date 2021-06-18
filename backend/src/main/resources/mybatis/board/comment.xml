@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dataus.deverse.domain.board.mapper.CommentMapper">
+
+    <select id="getCommentList" parameterType="map" resultType="CommentVO">
+        SELECT 
+              REPLY_NO
+            , BBSCTT_NO
+            , REPLY_REGIST_DT
+            , WRTER_USER_NO
+            , (SELECT USER_NICK 
+               FROM TB_USER_LIST tul 
+               WHERE trl.WRTER_USER_NO = tul.USER_NO
+              ) AS USER_NICK
+            , REPLY_CN
+            , (SELECT COUNT(1) 
+               FROM TB_REPLY_RCMD_LIST trrl 
+               WHERE trrl.DEL_YN = 'N' 
+               AND trl.REPLY_NO = trrl.REPLY_NO
+              ) AS REPLY_RCMD_COUNT
+            <if test="user != null">
+                , (SELECT COUNT(1)
+                   FROM TB_REPLY_RCMD_LIST trrl
+                   WHERE trrl.DEL_YN = 'N' 
+                   AND trl.REPLY_NO = trrl.REPLY_NO
+                   AND RCMD_USER_NO = #{user.userNo}
+                  ) AS RECOMMEND 
+            </if>
+        FROM TB_REPLY_LIST trl 
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+        ORDER BY REPLY_REGIST_DT DESC
+    </select>
+
+    <select id="getCommentCount" parameterType="int" resultType="int">
+        SELECT COUNT(1)
+        FROM TB_REPLY_LIST trl 
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+    </select>
+
+    <select id="checkPostNo" parameterType="int" resultType="boolean">
+        SELECT COUNT(1)
+        FROM TB_BBSCTT_LIST
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+    </select>
+
+    <insert id="addComment" parameterType="map" 
+            useGeneratedKeys="true" keyProperty="comment.replyNo">
+        INSERT INTO TB_REPLY_LIST(
+              BBSCTT_NO
+            , WRTER_USER_NO
+            , REPLY_CN
+            , INST_ID
+        )
+        VALUES(
+              #{comment.bbscttNo}
+            , #{user.userNo}
+            , #{comment.replyCn}
+            , #{user.userId}
+        )            
+    </insert>
+
+    <update id="deleteComment" parameterType="map">
+        UPDATE TB_REPLY_LIST
+        SET DEL_YN = 'Y'
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+        AND REPLY_NO = #{commentNo}
+        AND WRTER_USER_NO = #{user.userNo}
+    </update>
+
+    <update id="deleteCommentRecommend" parameterType="map">
+        UPDATE TB_REPLY_LIST
+        SET DEL_YN = 'Y'
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND REPLY_NO = #{commentNo}
+    </update>
+
+    <update id="modifyComment" parameterType="map">
+        UPDATE TB_REPLY_LIST
+        SET REPLY_CN = #{comment.replyCn}
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{comment.bbscttNo}
+        AND REPLY_NO = #{comment.replyNo}
+        AND WRTER_USER_NO = #{user.userNo}
+    </update>
+
+    <select id="checkUserRecommendComment" parameterType="map" resultType="boolean">
+        SELECT COUNT(1)
+        FROM TB_REPLY_RCMD_LIST
+        WHERE DEL_YN = 'N'
+        AND REPLY_NO = #{commentNo}
+        AND RCMD_USER_NO = #{user.userNo}
+    </select>
+
+    <insert id="addRecommendComment" parameterType="map">
+        INSERT INTO TB_REPLY_RCMD_LIST(
+              REPLY_NO
+            , RCMD_USER_NO
+            , INST_ID
+        )
+        VALUES(
+              #{commentNo}
+            , #{user.userNo}
+            , #{user.userId}
+        )
+    </insert>
+
+    <update id="deleteRecommendComment" parameterType="map">
+        UPDATE TB_REPLY_RCMD_LIST
+        SET DEL_YN = 'Y'
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND REPLY_NO = #{commentNo}
+        AND RCMD_USER_NO = #{user.userNo}
+    </update>
+
+    <select id="checkExistsCommentUser" parameterType="map" resultType="boolean">
+        SELECT COUNT(1)
+        FROM TB_REPLY_LIST
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+        AND REPLY_NO = #{commentNo}
+        <if test="user != null">
+            AND WRTER_USER_NO = #{user.userNo}
+        </if>
+    </select>
+
+</mapper>

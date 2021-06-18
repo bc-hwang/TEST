@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dataus.deverse.domain.board.mapper.PostMapper">
+
+      <sql id="PostCols">
+          tbl.BBSCTT_NO
+        , tbl.WRTER_USER_NO
+        , (SELECT tcc.CD_ENG_NM
+           FROM TB_CMMN_CD tcc 
+           WHERE tcc.DEL_YN = 'N'
+           AND tcc.CD_TYPE_ID = 'CSC001'
+           AND tbl.CTGRY_SE_CD = tcc.CD
+          ) AS CATEGORY_NM
+        , (SELECT tul.USER_NICK 
+           FROM TB_USER_LIST tul
+           WHERE 1=1
+           AND tbl.WRTER_USER_NO = tul.USER_NO
+          ) AS USER_NICK
+        , tbl.BBSCTT_REGIST_DT
+        , tbl.BBSCTT_TITLE
+        <if test='${content} == "Y"'>
+            , tbl.BBSCTT_CN
+        </if>
+        , (SELECT COUNT(1) 
+           FROM TB_REPLY_LIST trl 
+           WHERE trl.DEL_YN ='N' 
+           AND tbl.BBSCTT_NO = trl.BBSCTT_NO
+          ) AS REPLY_COUNT
+        , (SELECT COUNT(1) 
+           FROM TB_BBSCTT_RCMD_LIST tbrl
+           WHERE tbrl.DEL_YN ='N' 
+           AND tbl.BBSCTT_NO = tbrl.BBSCTT_NO
+          ) AS RCMD_COUNT
+        , tbtl.TAG_NO
+        , (SELECT ttl.TAG_NM
+           FROM TB_TAG_LIST ttl 
+           WHERE ttl.DEL_YN = 'N'
+           AND tbtl.TAG_NO = ttl.TAG_NO
+          ) AS TAG_NM
+    </sql>
+
+    <resultMap id="postResult" type="PostVO">
+        <id property="bbscttNo" column="BBSCTT_NO"/>
+        <result property="wrterUserNo" column="WRTER_USER_NO"/>
+        <result property="categoryNm" column="CATEGORY_NM"/>
+        <result property="userNick" column="USER_NICK"/>
+        <result property="bbscttRegistDt" column="BBSCTT_REGIST_DT"/>
+        <result property="bbscttTitle" column="BBSCTT_TITLE"/>
+        <result property="bbscttCn" column="BBSCTT_CN"/>
+        <result property="replyCount" column="REPLY_COUNT"/>
+        <result property="rcmdCount" column="RCMD_COUNT"/>
+        <result property="recommend" column="RECOMMEND"/>
+
+        <collection property="tagList" ofType="TagVO">
+            <id property="tagNo" column="TAG_NO"/>
+            <result property="tagNm" column="TAG_NM"/>
+        </collection>
+    </resultMap>
+
+    <select id="getPostList" 
+            parameterType="com.dataus.deverse.global.pagination.Pagination" 
+            resultMap="postResult">
+        WITH W1 as (
+            SELECT *
+            FROM TB_BBSCTT_LIST tbl
+            WHERE 1=1
+            AND tbl.DEL_YN = 'N'
+            <if test='page.category.code != "00"'>
+                AND tbl.CTGRY_SE_CD = #{page.category.code}
+            </if>
+            <if test='page.tags != null and !page.tags.isEmpty()'>
+                AND EXISTS (
+                    SELECT 'X'
+                    FROM TB_BBSCTT_TAG_LIST tbtl
+                    WHERE tbtl.DEL_YN = 'N'
+                    AND tbl.BBSCTT_NO = tbtl.BBSCTT_NO
+                    AND tbtl.TAG_NO IN
+                    <foreach item="tag" index="index" collection='page.tags'
+                            open="(" separator="," close=")">
+                        #{tag}
+                    </foreach>
+                )
+            </if>
+            <if test='!page.searchKeyword.isEmpty()'>
+                AND ( tbl.BBSCTT_TITLE LIKE CONCAT('%', #{page.searchKeyword}, '%')
+                   OR tbl.BBSCTT_CN LIKE CONCAT('%', #{page.searchKeyword}, '%') )
+            </if>
+            ORDER BY tbl.BBSCTT_NO DESC
+            LIMIT #{page.startPage}, #{page.recordsPerPage}
+        )
+        SELECT 
+            <include refid="PostCols">
+                <property name="content" value='page.includeContent'/>
+            </include>
+        FROM 
+              W1 tbl
+        LEFT OUTER JOIN TB_BBSCTT_TAG_LIST tbtl
+            ON tbl.BBSCTT_NO = tbtl.BBSCTT_NO AND tbtl.DEL_YN = 'N'
+        ORDER BY tbl.BBSCTT_NO DESC
+    </select>
+
+    <select id="getPostDetail" parameterType="map" resultMap="postResult">
+        SELECT 
+            <include refid="PostCols">
+                <property name="content" value='"Y"'/>
+            </include>
+            <if test='user != null'>
+                , (SELECT COUNT(1) 
+                   FROM TB_BBSCTT_RCMD_LIST tbrl 
+                   WHERE tbrl.DEL_YN = 'N'
+                   AND tbl.BBSCTT_NO = tbrl.BBSCTT_NO
+                   AND RCMD_USER_NO = #{user.userNo}
+                  ) AS RECOMMEND 
+            </if>
+        FROM
+            TB_BBSCTT_LIST tbl
+        LEFT OUTER JOIN TB_BBSCTT_TAG_LIST tbtl
+            ON tbl.BBSCTT_NO = tbtl.BBSCTT_NO AND tbtl.DEL_YN = 'N'
+        WHERE tbl.DEL_YN = 'N'
+        AND tbl.BBSCTT_NO = #{postNo}
+    </select>
+
+    <select id="getPostTotalCount" 
+            parameterType="com.dataus.deverse.global.pagination.Pagination" 
+            resultType="int">
+        SELECT 
+            COUNT(1)
+        FROM 
+              TB_BBSCTT_LIST tbl
+        WHERE 1=1
+        AND tbl.DEL_YN = 'N'
+        <if test='page.category.code != "00"'>
+            AND tbl.CTGRY_SE_CD = #{page.category.code}
+        </if>
+        <if test='page.tags != null and !page.tags.isEmpty()'>
+            AND EXISTS (
+                SELECT 'X'
+                FROM TB_BBSCTT_TAG_LIST tbtl
+                WHERE tbtl.DEL_YN = 'N'
+                AND tbl.BBSCTT_NO = tbtl.BBSCTT_NO
+                AND tbtl.TAG_NO IN
+                <foreach item="tag" index="index" collection='page.tags'
+                        open="(" separator="," close=")">
+                    #{tag}
+                </foreach>
+            )
+        </if>
+        <if test='!page.searchKeyword.isEmpty()'>
+            AND ( tbl.BBSCTT_TITLE LIKE CONCAT('%', #{page.searchKeyword}, '%')
+               OR tbl.BBSCTT_CN LIKE CONCAT('%', #{page.searchKeyword}, '%') )
+        </if>
+    </select>
+
+    <insert id="addPost" parameterType="map" 
+            useGeneratedKeys="true" keyProperty="post.bbscttNo">
+            INSERT INTO TB_BBSCTT_LIST(
+                  CTGRY_SE_CD
+                , WRTER_USER_NO
+                , BBSCTT_TITLE
+                , BBSCTT_CN
+                , INST_ID
+            )
+            VALUES(
+                  #{post.categoryNm.code}
+                , #{user.userNo}
+                , #{post.bbscttTitle}
+                , #{post.bbscttCn}
+                , #{user.userId}
+            )
+    </insert>
+
+    <select id="getPostTagCount" parameterType="int" resultType="int">
+        SELECT COUNT(1)
+        FROM TB_BBSCTT_TAG_LIST
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+    </select>
+
+    <insert id="addPostTag" parameterType="map">
+        INSERT INTO TB_BBSCTT_TAG_LIST(
+              BBSCTT_NO
+            , TAG_NO
+            , INST_ID
+        )
+        VALUES(
+              #{postNo}
+            , #{tagNo}
+            , #{userId}
+        )
+        ON DUPLICATE KEY
+            UPDATE DEL_YN = 'N'
+                 , UPDT_DT = NOW()
+                 , UPDT_ID = #{userId}
+    </insert>
+
+    <update id="deletePost" parameterType="map">
+        UPDATE TB_BBSCTT_LIST
+        SET DEL_YN = 'Y'
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+        AND WRTER_USER_NO = #{user.userNo}
+    </update>
+
+    <update id="deletePostTag" parameterType="map">
+        UPDATE TB_BBSCTT_TAG_LIST
+        SET DEL_YN = 'Y'
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+    </update>
+
+    <update id="deletePostComment" parameterType="map">
+        UPDATE TB_REPLY_LIST
+        SET DEL_YN = 'Y'
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+    </update>
+
+    <update id="deletePostRecommend" parameterType="map">
+        UPDATE TB_BBSCTT_RCMD_LIST
+        SET DEL_YN = 'Y'
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+    </update>
+
+    <update id="deleteCommentRecommend" parameterType="map">
+        UPDATE TB_REPLY_RCMD_LIST
+        SET DEL_YN = 'Y'
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND REPLY_NO IN (
+            SELECT REPLY_NO
+            FROM TB_REPLY_LIST
+            WHERE DEL_YN = 'N'
+            AND BBSCTT_NO = #{postNo}
+        )
+    </update>
+
+    <update id="modifyPost" parameterType="map">
+        UPDATE TB_BBSCTT_LIST
+        SET CTGRY_SE_CD =  #{post.categoryNm.code}
+          , BBSCTT_TITLE = #{post.bbscttTitle}
+          , BBSCTT_CN = #{post.bbscttCn}
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{post.bbscttNo}
+        AND WRTER_USER_NO = #{user.userNo}
+    </update>
+
+    <select id="checkUserRecommendPost" parameterType="map" resultType="boolean">
+        SELECT COUNT(1)
+        FROM TB_BBSCTT_RCMD_LIST
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+        AND RCMD_USER_NO = #{user.userNo}
+    </select>
+
+    <insert id="addRecommendPost" parameterType="map">
+        INSERT INTO TB_BBSCTT_RCMD_LIST(
+              BBSCTT_NO
+            , RCMD_USER_NO
+            , INST_ID
+        )
+        VALUES(
+              #{postNo}
+            , #{user.userNo}
+            , #{user.userId}
+        );
+    </insert>
+
+    <update id="deleteRecommendPost" parameterType="map">
+        UPDATE TB_BBSCTT_RCMD_LIST
+        SET DEL_YN = 'Y'
+          , UPDT_DT = NOW()
+          , UPDT_ID = #{user.userId}
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+        AND RCMD_USER_NO = #{user.userNo}
+    </update>
+
+    <select id="checkExistsPostUser" parameterType="map" resultType="boolean">
+        SELECT COUNT(1)
+        FROM TB_BBSCTT_LIST
+        WHERE DEL_YN = 'N'
+        AND BBSCTT_NO = #{postNo}
+        <if test="user != null">
+            AND WRTER_USER_NO = #{user.userNo}
+        </if>
+    </select>
+
+</mapper>

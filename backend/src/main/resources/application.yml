@@ -1,0 +1,67 @@
+# Logging Setting
+log4jdbc:
+    spylogdelegator:
+        name: net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator 
+    dump:
+        sql:
+            maxlinelength: 0
+
+# MyBatis Setting
+mybatis:
+    type-aliases-package: com.dataus.deverse.global.vo.base, com.dataus.deverse.domain.board.vo, com.dataus.deverse.domain.user.vo
+    mapper-locations: mybatis/**/*.xml
+    configuration:
+        map-underscore-to-camel-case: true
+
+spring:
+    datasource:
+        driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        url: jdbc:log4jdbc:mariadb://localhost:3306/playus
+        username: dataus
+        password: #insert password
+        HikariCP:
+            maximum-pool-size: 5
+    security:
+        oauth2:
+            client:
+                registration:
+                    github:
+                        clientId: 80e1d00c9f69d9f87131
+                        clientSecret: 084bc06065695599d7fe6aedd1baba4adff0ad0a
+                        redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+                        scope:
+                            - user:email
+                            - read:user
+                    google:
+                        clientId: 1059590504781-ip29uepiq6jpf91ais9r3nbrfhgagsv5.apps.googleusercontent.com
+                        clientSecret: 4lOnw-_HiXx0-R_1-ntiFx-8
+                        redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+                        scope:
+                            - email
+                            - profile
+                    facebook:
+                        clientId: 461829631817428
+                        clientSecret: c3f1d4193465404a7f4cb34f0b85267b
+                        redirectUri: "{baseUrl}/oauth2/callback/{registrationId}" # Facebook은 이제 https 리디렉션 URI 사용을 요구하므로 앱이 프로덕션에서 https를 지원하는지 확인하세요.
+                        scope:
+                            - email
+                            - public_profile
+                provider:
+                    facebook:
+                        authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
+                        tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
+                        userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
+
+app:
+    auth:
+        tokenSecret: #insert token scret, random string
+        tokenExpirationMsec: 864000000
+    oauth2:
+        authorizedRedirectUris:
+             - http://localhost:8080/oauth2/redirect
+
+server:
+    error:
+        include-stacktrace: NEVER
+
+

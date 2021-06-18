@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dataus.deverse.domain.user.mapper.OAuth2Mapper">
+
+        <select id="findById" parameterType="string" resultType="UserVO">
+                SELECT USER_NO
+                     , USER_ID
+                     , OAUTH_PROVIDER
+                     , USER_NM
+                     , USER_NICK
+                     , USER_EMAIL
+                     , USER_AVATAR_URL
+                     , USER_REGIST_DT
+                     , DEL_YN
+                     , INST_DT
+                     , INST_ID
+                     , UPDT_DT
+                     , UPDT_ID
+                FROM TB_USER_LIST tul
+                WHERE DEL_YN = 'N'
+                AND USER_ID = #{userId}
+        </select>
+
+        <insert id="addUser" parameterType="UserVO" 
+                useGeneratedKeys="true" keyProperty="userNo">
+                INSERT INTO TB_USER_LIST(
+                          USER_ID
+                        , OAUTH_PROVIDER
+                        , USER_NM
+                        , USER_NICK
+                        , USER_EMAIL
+                        , USER_AVATAR_URL
+                        , INST_ID
+                )
+                VALUES(
+                          #{user.userId}
+                        , #{user.oauthProvider}
+                        , #{user.userNm}
+                        , #{user.userNick}
+                        , #{user.userEmail}
+                        , #{user.userAvatarUrl}
+                        , #{user.instId}
+                )
+        </insert>
+
+        <update id="modifyUser" parameterType="UserVO">
+                UPDATE TB_USER_LIST
+                SET USER_NM = #{user.userNm}
+                  , USER_AVATAR_URL = #{user.userAvatarUrl}
+                WHERE USER_NO = #{user.userNo}
+        </update>
+
+</mapper>
