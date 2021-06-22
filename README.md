@@ -63,4 +63,11 @@ Build 설정 파일<br>
  deverse/frontend/.env.build 에 url 접속 정보 설정<br>
  
 # 참고 자료
-NHN Cloud Nubernetes : http://doc.skill.or.kr
+NHN Cloud Nubernetes GitBook : http://doc.skill.or.kr (빠른 개발을 위한 docker 활용법(5분 완성))<br>
+                               https://doc.skill.or.kr/docker (시스템 별 도커(docker) 설치 방법) <br>
+                               https://doc.skill.or.kr/docker-2 (Lean Startup 을 위한 docker 사용법)<br>
+                               https://doc.skill.or.kr/windows (Windows 컨테이너 실행 가이드)<br>
+                               https://doc.skill.or.kr/nhn-cloud (NHN Cloud Kubernetes 활용법)<br>
+                               https://doc.skill.or.kr/kubernetes-opensource (NHN Cloud Kubernetes 관리용 OpenSource 설치 방법)<br>
+                               https://doc.skill.or.kr/nhn-cloud-kubernetes-loadbalancer (TIPs. NHN Cloud Kubernetes 의 LoadBalancer 사용법)<br>
+                               https://www.slideshare.net/DataUs/dataus ([DataUs]클라우드 입문자를 위한 보안 가이드)<br>
