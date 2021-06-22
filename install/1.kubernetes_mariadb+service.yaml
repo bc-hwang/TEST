@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: project
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-mariadb
+  labels:
+    app: mariadb
+  namespace: project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+      ##tier: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+        ##tier: mariadb
+    spec:
+      hostname: mariadb
+      containers:
+      - name: mariadb
+        image: bchwang/tomcat_mariadb:mariadb
+        ports:
+        - containerPort: 3306
+          name: mariadb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-mariadb
+  labels:
+    app: mariadb
+  namespace: project
+spec:
+  clusterIP: None
+  ports:
+  - port: 3306
+    #protocol: TCP
+    #targetPort: 3306
+  selector:
+    app: mariadb
+    ##tier: mariadb ## 서버 컨테이너의 pod 라벨
+    #selector:
+    #app: my-project
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat
+  labels:
+    app: tomcat
+  namespace: project
+  annotations:                                           ## 오브젝트 선언형 관리
+    loadbalancer.openstack.org/keep-floatingip: "true"   ## Floating ip 설정
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: tomcat ## 서버 컨테이너의 pod 라벨
+    ##  tier: frontend
+  ## NodePort 가 아니라 LoadBalancer 로 설정 해 주어야 함.
+  type: LoadBalancer
+  ## Floating ip 를 지정 하여 Loadbalancer ip 로 설정.
+  loadBalancerIP: 133.186.246.158
