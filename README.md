@@ -63,7 +63,7 @@ Build 설정 파일<br>
  deverse/frontend/.env.build 에 url 접속 정보 설정<br>
  
 # 참고 자료
-[Dataus] NHN Cloud Docker & Nubernetes GitBook<br> 
+[Dataus] NHN Cloud Docker & Kubernetes GitBook<br> 
 * http://doc.skill.or.kr (빠른 개발을 위한 docker 활용법(5분 완성))<br>
 * https://doc.skill.or.kr/docker (시스템 별 도커(docker) 설치 방법) <br>
 * https://doc.skill.or.kr/docker-2 (Lean Startup 을 위한 docker 사용법)<br>
