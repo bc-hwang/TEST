@@ -11,7 +11,8 @@
 * NodeJS 14.6.1
 
 # Docker 를 이용하여 사용해 보기
-* 설치 내용은 /install 폴더를 참고 하시기 바랍니다.<br>
+`* 설치 내용은 /install 폴더를 참고 하시기 바랍니다.`
+<br>
 A. Docker Images 만들기(Tomcat, Mariadb)
 1. Dockerfile 을 이용하여 Mariadb 이미지 만들기
    - /install/mariadb/db_user.sql (DB 계정 스크립트)
