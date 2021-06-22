@@ -6,5 +6,5 @@
 
 
 Build 설정 파일
- build/application.yml 에 DB 접속 정보 설정
+ build/application.yml 에 DB 접속 정보 설정<br>
  deverse/frontend/.env.build 에 url 접속 정보 설정
