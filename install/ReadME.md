@@ -2,10 +2,10 @@
 
 개발자 커뮤니티 Deverse 구축 가이드 <br>
 
-# Docker 를 이용하여 사용해 보기
+# NHN Cloud Kubernetes & Docker 를 이용하여 사용해 보기
 `* 설치 내용은 /install 폴더를 참고 하시기 바랍니다.`
 <br>
-A. Docker Images 만들기(Tomcat, Mariadb)
+## A. Docker Images 만들기(Tomcat, Mariadb)
 ```
 1. Dockerfile 을 이용하여 Mariadb 이미지 만들기
    - /install/mariadb/db_user.sql (DB 계정 스크립트)
@@ -33,7 +33,7 @@ A. Docker Images 만들기(Tomcat, Mariadb)
 ```
 <br>
 
-B. Build 된 Tomcat, Mariadb Images 실행 하기
+## B. Build 된 Tomcat, Mariadb Images 실행 하기
 ```
 1. docker images 확인 하기
    - docker images
@@ -46,7 +46,7 @@ B. Build 된 Tomcat, Mariadb Images 실행 하기
 ```
 <br>
 
-C. Docker-Compose 사용하기
+## C. Docker-Compose 사용하기
 ```
 1. Local Images 로 실행 하기
    - /install/docker-compose_local.yml (docker-compose 설정 값 Local Images 사용)
@@ -55,7 +55,7 @@ C. Docker-Compose 사용하기
 ```
 <br>
 
-D. NHN Cloud Kubernetes 로 사용하기
+## D. NHN Cloud Kubernetes 로 사용하기
 ```
 1. NHN Cloud 회원 가입 및 Console 로그인 : http://toast.com
 2. NHN Cloud Console 에 Kubernetes Manager Instance 생성
