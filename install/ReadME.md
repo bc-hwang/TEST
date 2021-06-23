@@ -2,15 +2,6 @@
 
 개발자 커뮤니티 Deverse 구축 가이드 <br>
 
-# 개발 환경
-* Ubuntu/20.x (OS)
-* mariadb/10.4.18 (DB Service)
-* tomcat/9.0.45 (WAS Service) 
-* nginx/1.18.0 (WEB Service)
-* OpenJDK/1.8.x
-* Maven/3.8.1
-* NodeJS/14.6.1
-
 # Docker 를 이용하여 사용해 보기
 `* 설치 내용은 /install 폴더를 참고 하시기 바랍니다.`
 <br>
