@@ -39,7 +39,7 @@
 ```
 ####  4. Dockerfile Build 하는 방법(nginx_tomcat Image)
 ```
-   - /install/tomcat 의 폴더에 dockerfile 을 혹인 후 아래 명령어 실행
+   - /install/nginx_tomcat 의 폴더에 dockerfile 을 혹인 후 아래 명령어 실행
      -> docker build -t tomcat_mariadb:nginx_tomcat .
    - docker images (tomcat_mariadb:nginx_tomcat 이미지 확인)
 ```
