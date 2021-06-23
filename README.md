@@ -15,6 +15,7 @@
 `* 설치 내용은 /install 폴더를 참고 하시기 바랍니다.`
 <br>
 A. Docker Images 만들기(Tomcat, Mariadb)
+```
 1. Dockerfile 을 이용하여 Mariadb 이미지 만들기
    - /install/mariadb/db_user.sql (DB 계정 스크립트)
    - /install/mariadb/devers.sql (DB 스키마 스크립트)
@@ -38,9 +39,11 @@ A. Docker Images 만들기(Tomcat, Mariadb)
    - docker tag tomcat_mariadb:mariadb bchwang/tomcat_mariadb:mariadb (tag 설정)
    - docker push bchwang/tomcat_mariadb:tomcat (docker hub 에 업로드 진행)
    - docker push bchwang/tomcat_mariadb:mariadb (docker hub 에 업로드 진행)
+```
 <br>
 
 B. Build 된 Tomcat, Mariadb Images 실행 하기
+```
 1. docker images 확인 하기
    - docker images
 2. Local Image 로 실행 하기
@@ -49,16 +52,20 @@ B. Build 된 Tomcat, Mariadb Images 실행 하기
 3. docker Hub Image 로 실행 하기
    - docker run -d --name mariadb bchwang/tomcat_mariadb:mariadb
    - docker run -d --name tomcat -p 80:80 --link mariadb bchwang/tomcat_mariadb:tomcat
+```
 <br>
 
 C. Docker-Compose 사용하기
+```
 1. Local Images 로 실행 하기
    - /install/docker-compose_local.yml (docker-compose 설정 값 Local Images 사용)
 2. Docker Hub 에 Push 한 Images 로 실행 하기
    - /install/docker-compose.yml (docker-compose 설정 값 Docker Hub Images 사용)
+```
 <br>
 
 D. NHN Cloud Kubernetes 로 사용하기
+```
 1. NHN Cloud 회원 가입 및 Console 로그인 : http://toast.com
 2. NHN Cloud Console 에 Kubernetes Manager Instance 생성
    - NHN Cloud Console 접속 -> Compute -> Instance -> 인스턴스 생성
@@ -82,7 +89,8 @@ D. NHN Cloud Kubernetes 로 사용하기
      - nginx+tomcat Server 접속
      - /home/dev/build/application.yml 에 DB 접속 정보 설정
      - /home/dev/deverse/frontend/.env.build 에 url 접속 정보 설정
- 
+```
+
 # 참고 자료
 [Dataus] NHN Cloud Docker & Kubernetes GitBook<br> 
 * http://doc.skill.or.kr (빠른 개발을 위한 docker 활용법(5분 완성))<br>
