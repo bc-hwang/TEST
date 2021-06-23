@@ -22,7 +22,7 @@
    - /install/mariadb/devers.sql (DB 스키마 스크립트)
    - /install/mariadb/dockerfile (Docker Image 스크립트)
 ```
-#### 2. Dockerfile Build 방법(Mariadb Image)
+#### 2. Dockerfile Build 방법(mariadb Image)
 ```
    - /install/mariadb 의 폴더에 dockerfile 을 확인 후 아래 명령어 실행
      -> docker build -t tomcat_mariadb:mariadb .
@@ -39,7 +39,7 @@
 ```
 ####  4. Dockerfile Build 하는 방법(nginx_tomcat Image)
 ```
-   - /install/tomcat 의 폴더에 dockerfile 을 혹인 후 아래 명령어 실행
+   - /install/nginx_tomcat 의 폴더에 dockerfile 을 혹인 후 아래 명령어 실행
      -> docker build -t tomcat_mariadb:nginx_tomcat .
    - docker images (tomcat_mariadb:nginx_tomcat 이미지 확인)
 ```
