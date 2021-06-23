@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  mariadb:
+    image: bchwang/tomcat_mariadb:mariadb
+    restart: always
+
+  project-tomcat:
+    image: bchwang/tomcat_mariadb:nginx_tomcat
+    restart: always
+    ports:
+      - 80:80
+    links:
+      - mariadb

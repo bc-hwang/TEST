@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-tomcat
+  labels:
+    app: nginx-tomcat
+  namespace: project
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-tomcat
+  template:
+    metadata:
+      labels:
+        app: nginx-tomcat
+      name: nginx-tomcat
+    spec:
+      hostname: nginx-tomcat
+      hostAliases:
+      - ip: "10.100.4.7" ### mariadb hosts 지정
+        hostnames:
+        - "mariadb"
+      containers:
+      - name: nginx-tomcat
+        image: bchwang/tomcat_mariadb:nginx_tomcat
+        ports:
+        - containerPort: 80
+          name: nginx-tomcat
+
