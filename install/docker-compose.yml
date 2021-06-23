@@ -5,7 +5,7 @@ services:
     image: bchwang/tomcat_mariadb:mariadb
     restart: always
 
-  project-tomcat:
+  nginx_tomcat:
     image: bchwang/tomcat_mariadb:nginx_tomcat
     restart: always
     ports:
