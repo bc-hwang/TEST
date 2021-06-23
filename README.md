@@ -3,12 +3,13 @@
 개발자 커뮤니티 Deverse 구축 가이드 <br>
 
 # 개발 환경
-* Ubuntu 20.x (OS)
-* mariadb 10.4.18 (DB Service)
-* tomcat 9.0.45 (WAS Service) 
-* OpenJDK 1.8.x
-* Maven 3.8.1
-* NodeJS 14.6.1
+* Ubuntu/20.x (OS)
+* mariadb/10.4.18 (DB Service)
+* tomcat/9.0.45 (WAS Service) 
+* nginx/1.18.0 (WEB Service)
+* OpenJDK/1.8.x
+* Maven/3.8.1
+* NodeJS/14.6.1
 
 # Docker 를 이용하여 사용해 보기
 `* 설치 내용은 /install 폴더를 참고 하시기 바랍니다.`
@@ -57,10 +58,30 @@ C. Docker-Compose 사용하기
    - /install/docker-compose.yml (docker-compose 설정 값 Docker Hub Images 사용)
 <br>
 
-
-Build 설정 파일<br>
- build/application.yml 에 DB 접속 정보 설정<br>
- deverse/frontend/.env.build 에 url 접속 정보 설정<br>
+D. NHN Cloud Kubernetes 로 사용하기
+1. NHN Cloud 회원 가입 및 Console 로그인 : http://toast.com
+2. NHN Cloud Console 에 Kubernetes Manager Instance 생성
+   - NHN Cloud Console 접속 -> Compute -> Instance -> 인스턴스 생성
+   - 이미지(Ubuntu Server 20.04 LTS) -> 인스턴스 이름(kube-manager) -> 인스턴스 타입(Standard : t2.c1m1) -> 키 페어 선택(생성 or 기존에 사용하던것)
+     -> 블록 스토리지 타입(HDD or SDD) -> 블록 스토리지 크기(50~100GB) -> 인스턴스 생성
+3. NHN Cloud Console 에서 Kubernetes 생성 
+   - NHN Cloud Console 접속 -> Container -> Kubernetes -> 클러스터 생성
+   - 클러스터 이름(kube-master) -> 인스턴스 타입(Standard : m2.c8m16) -> 노드 수(2~3개) -> 키 페어 선택(생성 or 기존에 사용하던것)
+     -> 블록 스토리지 타입(HDD or SDD) -> 블록 스토리지 크기(50~100GB) -> 오토 스케일러(사용 or 사용 안 함) -> 클러스터 생성
+4. NHN Cloud Console 에서 SSH 접속 설정
+   - NHN Cloud Console 접속 -> Network -> Security Groups -> Default 선택 -> 보안정책 생성 -> 포트: 22, 원격 공인IP 입력(ex 포트: 22, CIDR: 111.111.111.111/32) 후 확인
+   - 자세한 사항은 https://docs.toast.com/ko/Compute/Instance/ko/overview/#linux (SSH 접속 방법) 참고
+5. NHN Cloud 에서 생성된 Instance(Kube-manager) 접속 방법 및 Kubernetes 연결 방법
+   - https://doc.skill.or.kr/nhn-cloud#5-2-kube-manager-api 에서 NHN Cloud Kubernetes API 설정 방법
+6. NHN Cloud 에서 Kubernetes 를 이용하여 서비스 사용하기
+   - /install/1.kubernetes_mariadb+service.yaml (mariadb Pod/Service 등 설정 값)
+     -> kubectl apply -f 1.kubernetes_mariadb+service.yaml (mariadb pod 와 Service 실행) -> kubectl get pod -n project -o wide (Mariaddb IP 확인)
+   - /install/2.kubernetes_nginx+tomcat.yaml (tomcat Pod 설정 값. 아래의 Build 정보 수정)
+     -> vi 2.kubernetes_nginx+tomcat.yaml (- ip: "10.100.4.9" 의 값을 Mariadb IP 로 수정) -> kubectl apply -f 2.kubernetes_nginx+tomcat.yaml (Nginx 와 Tomcat Pod 실행) 
+   - Build 설정 파일
+     - nginx+tomcat Server 접속
+     - /home/dev/build/application.yml 에 DB 접속 정보 설정
+     - /home/dev/deverse/frontend/.env.build 에 url 접속 정보 설정
  
 # 참고 자료
 [Dataus] NHN Cloud Docker & Kubernetes GitBook<br> 
