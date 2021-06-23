@@ -19,7 +19,7 @@ A. Docker Images 만들기(Tomcat, Mariadb)
    - /install/mariadb/devers.sql (DB 스키마 스크립트)
    - /install/mariadb/dockerfile (Docker Image 스크립트)
 2. Dockerfile Build 방법
-   - /install/mariadb 의 폴더에 dockerfile 을 혹인 후 아래 명령어 실행<br>
+   - /install/mariadb 의 폴더에 dockerfile 을 확인 후 아래 명령어 실행<br>
      -> docker build -t tomcat_mariadb:mariadb .
    - docker images (tomcat_mariadb:mariadb 이미지 확인)
 3. Dockerfile 을 이용하여 tomcat 이미지 만들기
