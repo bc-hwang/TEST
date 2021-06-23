@@ -24,20 +24,22 @@
    - /install/mariadb 의 폴더에 dockerfile 을 확인 후 아래 명령어 실행<br>
      -> docker build -t tomcat_mariadb:mariadb .
    - docker images (tomcat_mariadb:mariadb 이미지 확인)
-3. Dockerfile 을 이용하여 tomcat 이미지 만들기
-   - /install/tomcat/apache-maven-3.8.1.tar.gz (maven src 파일)
-   - /install/tomcat/tomcat-9.0.45.tar.gz (tomcat src 파일)
-   - /install/tomcat/build.tar.gz (src build 파일)
-   - /install/tomcat/dockerfile (Docker Image 스크립트)
+3. Dockerfile 을 이용하여 nginx_tomcat 이미지 만들기
+   - /install/nginx_tomcat/apache-maven-3.8.1.tar.gz (maven src 파일)
+   - /install/nginx_tomcat/tomcat-9.0.45.tar.gz (tomcat src 파일)
+   - /install/nginx_tomcat/build.tar.gz (src build 파일)
+   - /install/nginx_tomcat/dockerfile (Docker Image 스크립트)
+   - /install/nginx_tomcat/default.conf (nginx 설정 파일)
+   - /install/nginx_tomcat/nginx.conf (nginx 설정 파일)
 4. Dockerfile Build 하는 방법
    - /install/tomcat 의 폴더에 dockerfile 을 혹인 후 아래 명령어 실행<br>
-     -> docker build -t tomcat_mariadb:tomcat .
-   - docker images (tomcat_mariadb:tomcat 이미지 확인)
+     -> docker build -t tomcat_mariadb:nginx_tomcat .
+   - docker images (tomcat_mariadb:nginx_tomcat 이미지 확인)
 5. Docker Hub push 하는 방법
    - docker login 을 함.
-   - docker tag tomcat_mariadb:tomcat bchwang/tomcat_mariadb:tomcat (tag 설정)
+   - docker tag tomcat_mariadb:nginx_tomcat bchwang/tomcat_mariadb:nginx_tomcat (tag 설정)
    - docker tag tomcat_mariadb:mariadb bchwang/tomcat_mariadb:mariadb (tag 설정)
-   - docker push bchwang/tomcat_mariadb:tomcat (docker hub 에 업로드 진행)
+   - docker push bchwang/tomcat_mariadb:nginx_tomcat (docker hub 에 업로드 진행)
    - docker push bchwang/tomcat_mariadb:mariadb (docker hub 에 업로드 진행)
 ```
 <br>
@@ -48,10 +50,10 @@
    - docker images
 2. Local Image 로 실행 하기
    - docker run -d --name mariadb tomcat_mariadb:mariadb
-   - docker run -d --name tomcat -p 80:80 --link mariadb tomcat_mariadb:tomcat
+   - docker run -d --name tomcat -p 80:80 --link mariadb tomcat_mariadb:nginx_tomcat
 3. docker Hub Image 로 실행 하기
    - docker run -d --name mariadb bchwang/tomcat_mariadb:mariadb
-   - docker run -d --name tomcat -p 80:80 --link mariadb bchwang/tomcat_mariadb:tomcat
+   - docker run -d --name tomcat -p 80:80 --link mariadb bchwang/tomcat_mariadb:nginx_tomcat
 ```
 <br>
 
