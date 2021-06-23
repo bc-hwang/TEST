@@ -2,11 +2,11 @@ version: '2'
 
 services:
   mariadb:
-    image: project-mariadb:0.1
+    image: tomcat_mariadb:mariadb
     restart: always
 
-  project-tomcat:
-    image: project-tomcat:0.1
+  nginx_tomcat:
+    image: tomcat_mariadb:nginx_tomcat
     restart: always
     ports:
       - 80:80
