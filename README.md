@@ -11,7 +11,7 @@
 * Maven/3.8.1
 * NodeJS/14.6.1
 
-# Docker 를 이용하여 사용해 보기
+# NHN Cloud Kubernetes & Docker 를 이용하여 사용해 보기
 `* 설치 내용은 /install 폴더를 참고 하시기 바랍니다.`
 <br>
 A. Docker Images 만들기(Tomcat, Mariadb)
