@@ -107,7 +107,7 @@
 #### 6. NHN Cloud 에서 Kubernetes 를 이용하여 서비스 사용하기
 ```
    - /install/1.kubernetes_mariadb+service.yaml (mariadb Pod/Service 등 설정 값)
-     -> kubectl apply -f 1.kubernetes_mariadb+service.yaml (mariadb pod 와 Service 실행) -> kubectl get pod -n project -o wide (Mariaddb IP 확인)
+     -> kubectl apply -f 1.kubernetes_mariadb+service.yaml (mariadb pod 와 Service 실행) -> kubectl get pod -n project -o wide (Mariadb IP 확인)
    - /install/2.kubernetes_nginx+tomcat.yaml (tomcat Pod 설정 값. 아래의 Build 정보 수정)
      -> vi 2.kubernetes_nginx+tomcat.yaml (- ip: "10.100.4.9" 의 값을 Mariadb IP 로 수정) -> kubectl apply -f 2.kubernetes_nginx+tomcat.yaml (Nginx 와 Tomcat Pod 실행) 
    - Build 설정 파일
