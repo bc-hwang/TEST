@@ -128,4 +128,5 @@
 * https://www.slideshare.net/DataUs/dataus ([DataUs]클라우드 입문자를 위한 보안 가이드)<br>
 
 # 문의 사항
+* NHN Cloud 및 Docker, Kubernetes 사용법에 대한 문의 사항은 아래의 E-Mail 로 주시기 바랍니다.
 bchwang@dataus.co.kr
