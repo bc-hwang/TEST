@@ -131,5 +131,5 @@
 * https://hub.docker.com/u/bchwang
 
 # 문의 사항
-* NHN Cloud 및 Docker, Kubernetes 사용법에 대한 문의 사항은 아래의 E-Mail 로 주시기 바랍니다.
+* NHN Cloud 및 Docker, Kubernetes 사용법에 대한 문의 사항은 E-Mail 로 보내 주시기 바랍니다.
 bchwang@dataus.co.kr
