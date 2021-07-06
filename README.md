@@ -1,8 +1,8 @@
-# [Dataus] Deverse
+# I. [Dataus] Deverse
 
 개발자 커뮤니티 Deverse 구축 가이드 <br>
 
-# 개발 환경
+# II. 개발 환경
 * Ubuntu/20.x (OS)
 * mariadb/10.4.18 (DB Service)
 * tomcat/9.0.45 (WAS Service) 
@@ -11,7 +11,7 @@
 * Maven/3.8.1
 * NodeJS/14.6.1
 
-# NHN Cloud Kubernetes & Docker 를 이용하여 사용해 보기
+# III. NHN Cloud Kubernetes & Docker 를 이용하여 사용해 보기
 `* 설치 내용은 /install 폴더를 참고 하시기 바랍니다.`
 
 ## A. DockerFile 을 이용하여 Docker Images 만들기(Tomcat, Mariadb)
@@ -122,7 +122,7 @@
      - /home/dev/deverse/frontend/.env.build 에 url 접속 정보 설정
 ```
 
-# 참고 자료
+# IV. 참고 자료
 ## [Dataus] NHN Cloud Docker & Kubernetes GitBook<br> 
 * http://doc.skill.or.kr (빠른 개발을 위한 docker 활용법(5분 완성))<br>
 * https://doc.skill.or.kr/docker (시스템 별 도커(docker) 설치 방법) <br>
@@ -133,9 +133,9 @@
 * https://doc.skill.or.kr/nhn-cloud-kubernetes-loadbalancer (TIPs. NHN Cloud Kubernetes 의 LoadBalancer 사용법)<br>
 * https://www.slideshare.net/DataUs/dataus ([DataUs]클라우드 입문자를 위한 보안 가이드)<br>
 
-## Docker Hub
+## V. Docker Hub
 * https://hub.docker.com/u/bchwang
 
-# 문의 사항
+# VI. 문의 사항
 * NHN Cloud 및 Docker, Kubernetes 사용법에 대한 문의 사항은 E-Mail 로 보내 주시기 바랍니다.
 bchwang@dataus.co.kr
