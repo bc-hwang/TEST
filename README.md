@@ -61,12 +61,12 @@
 #### 2. Local Image 로 실행 하기
 ```
    - docker run -d --name mariadb tomcat_mariadb:mariadb
-   - docker run -d --name tomcat -p 80:80 --link mariadb tomcat_mariadb:nginx_tomcat
+   - docker run -d --name nginx_tomcat -p 80:80 --link mariadb tomcat_mariadb:nginx_tomcat
 ```
 #### 3. docker Hub Image 로 실행 하기
 ```
    - docker run -d --name mariadb bchwang/tomcat_mariadb:mariadb
-   - docker run -d --name tomcat -p 80:80 --link mariadb bchwang/tomcat_mariadb:nginx_tomcat
+   - docker run -d --name nginx_tomcat -p 80:80 --link mariadb bchwang/tomcat_mariadb:nginx_tomcat
 ```
 
 ## C. Docker-Compose 사용하기
@@ -78,6 +78,12 @@
 #### 2. Docker Hub 에 Push 한 Images 로 실행 하기
 ```
    - /install/docker-compose.yml (docker-compose 설정 값 Docker Hub Images 사용)
+```
+#### 3. Docker Hub 에 Push 한 Images(all-in-one) 로 실행 하기
+```
+   - /install/docker-compose_all-in-one.yml (docker-compose 설정 값 Docker Hub Images[all-in-on] 사용)
+   - 실행 후 Container 접속 후 아래 명령어 실행
+   - nginx -g 'daemon on;' && /home/dev/tomcat-9.0.45/bin/startup.sh
 ```
 
 ## D. NHN Cloud Kubernetes 로 사용하기
